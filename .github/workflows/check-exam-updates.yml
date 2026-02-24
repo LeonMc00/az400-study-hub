@@ -2,7 +2,7 @@ name: Check AZ-400 Exam Updates
 
 on:
   schedule:
-    - cron: '0 9 * * 1'  # Every Monday at 9am UTC
+    - cron: '0 9 1 * *'  # First day of every Month at 9am UTC
   workflow_dispatch:       # Also allow manual trigger
 
 jobs:
@@ -32,6 +32,19 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: '⚠️ AZ-400 exam content may have changed',
-              body: '@Claude The Microsoft AZ-400 study guide page has changed. Review it at https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400 and update the study hub accordingly.',
+              body: 'The Microsoft AZ-400 study guide page has changed. Review it at https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400 and update the study hub accordingly.',
               labels: ['exam-update']
+            })
+            return issue.data.number
+
+      - name: Tag Claude in a comment
+        if: env.CHANGED == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.create-issue.outputs.result }},
+              body: '@claude The AZ-400 exam study guide page has changed. Please review the current skills measured at https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400 and review az400-study-hub-v2.html in this repository. Suggest what content needs adding, updating or removing based on any changes to the exam domains, weightings or topics.'
             })
