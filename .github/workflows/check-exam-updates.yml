@@ -2,12 +2,13 @@ name: Check AZ-400 Exam Updates
 
 on:
   schedule:
-    - cron: '0 9 1 * *'  # First day of every Month at 9am UTC
+    - cron: '0 9 1 * *'  # First day of every month at 9am UTC
   workflow_dispatch:       # Also allow manual trigger
 
 jobs:
   check-updates:
     runs-on: ubuntu-latest
+
     steps:
       - name: Fetch Microsoft study guide
         run: |
@@ -26,9 +27,10 @@ jobs:
       - name: Open issue if changed
         if: env.CHANGED == 'true'
         uses: actions/github-script@v7
+        id: create-issue
         with:
           script: |
-            github.rest.issues.create({
+            const issue = await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: '⚠️ AZ-400 exam content may have changed',
