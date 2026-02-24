@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AZ-400 Study Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0e1a; --surface:#111827; --surface2:#1a2235; --border:#1f2d45;
+  --text:#e8edf5; --muted:#8899aa;
+  --d1:#3b82f6; --d2:#8b5cf6; --d3:#f59e0b; --d4:#ef4444; --d5:#10b981;
+  --accent:#60a5fa; --pass:#10b981; --fail:#ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{position:relative;padding:56px 40px 36px;text-align:center;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -20%,rgba(59,130,246,.18) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(139,92,246,.1) 0%,transparent 50%);pointer-events:none;}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,.15);border:1px solid rgba(59,130,246,.3);border-radius:100px;padding:6px 16px;font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:.08em;margin-bottom:18px;}
+.badge::before{content:'●';font-size:8px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4.2rem);font-weight:800;line-height:1.05;letter-spacing:-.02em;background:linear-gradient(135deg,#e8edf5 0%,#60a5fa 50%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.subtitle{color:var(--muted);font-size:1rem;font-weight:300;margin-bottom:28px;}
+.weight-bar-container{max-width:800px;margin:0 auto 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 26px;text-align:left;}
+.weight-bar-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;}
+.weight-bar{display:flex;height:34px;border-radius:8px;overflow:hidden;gap:2px;margin-bottom:14px;}
+.weight-seg{display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:rgba(255,255,255,.9);transition:all .3s;cursor:pointer;}
+.weight-seg:hover{filter:brightness(1.2);transform:scaleY(1.1);}
+.weight-legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;}
+.legend-item{display:flex;align-items:center;gap:6px;color:var(--muted);}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+
+/* ── NAV ── */
+.nav{display:flex;justify-content:center;gap:8px;padding:18px 40px;flex-wrap:wrap;}
+.tab-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:10px 20px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;transition:all .2s;display:flex;align-items:center;gap:7px;}
+.tab-btn:hover,.tab-btn.active{background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.5);color:var(--accent);}
+
+/* ── CONTENT ── */
+.content{max-width:980px;margin:0 auto;padding:0 22px 90px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION LABEL ── */
+.section-label{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:28px 0 14px;display:flex;align-items:center;gap:10px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* ── DOMAIN CARDS ── */
+.domains-grid{display:grid;gap:14px;}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.domain-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3);}
+.domain-header{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;user-select:none;}
+.domain-num{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;flex-shrink:0;color:#fff;}
+.domain-info{flex:1;}
+.domain-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:4px;}
+.domain-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.weight-pill{font-family:'DM Mono',monospace;font-size:11px;padding:2px 10px;border-radius:100px;background:rgba(255,255,255,.07);color:var(--muted);}
+.weight-pill.big{background:rgba(245,158,11,.15);color:#f59e0b;}
+.domain-emoji{font-size:1.2rem;}
+.chevron{font-size:.9rem;color:var(--muted);transition:transform .3s;margin-left:auto;}
+.domain-card.open .chevron{transform:rotate(180deg);}
+.domain-body{display:none;padding:0 22px 22px;border-top:1px solid var(--border);}
+.domain-card.open .domain-body{display:block;animation:fadeIn .25s ease;}
+.what-is{background:var(--surface2);border-radius:10px;padding:14px;margin:14px 0;font-size:14px;line-height:1.7;border-left:3px solid;}
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin-top:14px;}
+.topic-chip{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;display:flex;align-items:flex-start;gap:7px;line-height:1.4;}
+.topic-chip .icon{font-size:.95rem;flex-shrink:0;margin-top:1px;}
+.key-tools{margin-top:14px;display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+.tools-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.tool-tag{font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);}
+.domain-card.c1{border-left:3px solid var(--d1);}
+.domain-card.c2{border-left:3px solid var(--d2);}
+.domain-card.c3{border-left:3px solid var(--d3);}
+.domain-card.c4{border-left:3px solid var(--d4);}
+.domain-card.c5{border-left:3px solid var(--d5);}
+.what-is.c1{border-color:var(--d1);}.what-is.c2{border-color:var(--d2);}
+.what-is.c3{border-color:var(--d3);}.what-is.c4{border-color:var(--d4);}.what-is.c5{border-color:var(--d5);}
+
+/* ── ACTIVITY PANEL ── */
+.activity-panel{margin-top:20px;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.activity-tabs{display:flex;background:var(--bg);border-bottom:1px solid var(--border);}
+.act-tab{flex:1;padding:10px 6px;font-size:12px;font-weight:500;text-align:center;cursor:pointer;color:var(--muted);border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px;border-bottom:2px solid transparent;}
+.act-tab:hover{color:var(--text);}
+.act-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.act-tab .act-icon{font-size:1.1rem;}
+.activity-content{padding:18px 20px;}
+.act-pane{display:none;}
+.act-pane.active{display:block;animation:fadeIn .2s ease;}
+
+/* ── FLASHCARDS ── */
+.flashcard-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.flashcard{perspective:600px;cursor:pointer;flex:1;min-width:140px;max-width:220px;}
+.flashcard-inner{position:relative;width:100%;padding-top:120%;transform-style:preserve-3d;transition:transform .5s;}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg);}
+.flashcard-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:14px;text-align:center;font-size:13px;line-height:1.5;}
+.flashcard-front{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;}
+.flashcard-back{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);color:var(--text);transform:rotateY(180deg);font-size:12.5px;}
+.flashcard-hint{font-size:10px;color:var(--muted);text-align:center;margin-top:-8px;margin-bottom:10px;font-family:'DM Mono',monospace;}
+
+/* ── DRAG & DROP ── */
+.dnd-area{display:flex;gap:14px;flex-wrap:wrap;}
+.dnd-source{flex:1;min-width:160px;}
+.dnd-target{flex:1;min-width:160px;}
+.dnd-label{font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px;}
+.dnd-items{display:flex;flex-direction:column;gap:6px;min-height:40px;}
+.dnd-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:12.5px;cursor:grab;user-select:none;display:flex;align-items:center;gap:8px;transition:all .2s;}
+.dnd-item:active{cursor:grabbing;opacity:.7;}
+.dnd-item.dragging{opacity:.4;border-style:dashed;}
+.dnd-item.correct-drop{background:rgba(16,185,129,.12);border-color:var(--pass);color:#6ee7b7;}
+.dnd-item.wrong-drop{background:rgba(239,68,68,.1);border-color:var(--fail);color:#fca5a5;}
+.dnd-zone{background:rgba(255,255,255,.02);border:2px dashed var(--border);border-radius:10px;min-height:44px;padding:8px;transition:border-color .2s;}
+.dnd-zone.drag-over{border-color:var(--accent);background:rgba(59,130,246,.06);}
+.dnd-result{margin-top:10px;font-size:13px;padding:10px 14px;border-radius:8px;display:none;}
+.dnd-result.show{display:block;}
+.dnd-result.good{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;}
+.dnd-result.bad{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.dnd-reset{margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.dnd-reset:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── YAML BUILDER ── */
+.yaml-builder{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:640px){.yaml-builder{grid-template-columns:1fr;}}
+.yaml-controls{display:flex;flex-direction:column;gap:8px;}
+.yaml-block-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;cursor:pointer;font-family:'DM Mono',monospace;font-size:12px;text-align:left;transition:all .2s;display:flex;align-items:center;gap:10px;}
+.yaml-block-btn:hover{border-color:var(--d3);color:var(--d3);}
+.yaml-block-btn .block-key{color:var(--muted);font-size:11px;}
+.yaml-output{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:16px;font-family:'DM Mono',monospace;font-size:12px;line-height:1.8;min-height:200px;position:relative;overflow:auto;}
+.yaml-output pre{white-space:pre-wrap;word-break:break-word;}
+.yaml-line-key{color:#7ee787;}
+.yaml-line-val{color:#79c0ff;}
+.yaml-line-str{color:#a5d6ff;}
+.yaml-line-comment{color:#8b949e;}
+.yaml-line-special{color:#ffa657;}
+.yaml-clear{margin-top:8px;background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .2s;width:100%;}
+.yaml-clear:hover{border-color:var(--fail);color:var(--fail);}
+.yaml-tip{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5;font-style:italic;}
+.yaml-validate{margin-top:8px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#f59e0b;padding:8px 12px;border-radius:8px;font-size:12px;display:none;}
+.yaml-validate.show{display:block;}
+
+/* ── PIPELINE BUILDER ── */
+.pipe-builder{display:flex;flex-direction:column;gap:12px;}
+.pipe-steps{display:flex;flex-direction:column;gap:0;}
+.pipe-step{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start;opacity:.35;transition:all .3s;}
+.pipe-step.unlocked{opacity:1;}
+.pipe-step.completed{border-color:var(--pass);background:rgba(16,185,129,.07);}
+.pipe-step-num{width:28px;height:28px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;flex-shrink:0;color:var(--muted);}
+.pipe-step.unlocked .pipe-step-num{background:rgba(245,158,11,.2);color:var(--d3);}
+.pipe-step.completed .pipe-step-num{background:rgba(16,185,129,.2);color:var(--pass);}
+.pipe-step-body{flex:1;}
+.pipe-step-title{font-weight:600;font-size:14px;margin-bottom:4px;}
+.pipe-step-desc{font-size:12.5px;color:var(--muted);line-height:1.5;margin-bottom:10px;}
+.pipe-connector{width:2px;height:16px;background:var(--border);margin:0 auto;}
+.pipe-choices{display:flex;flex-wrap:wrap;gap:6px;}
+.pipe-choice{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.pipe-choice:hover:not(:disabled){border-color:var(--d3);color:var(--d3);}
+.pipe-choice.chosen-right{border-color:var(--pass);color:var(--pass);background:rgba(16,185,129,.08);}
+.pipe-choice.chosen-wrong{border-color:var(--fail);color:var(--fail);background:rgba(239,68,68,.08);}
+.pipe-feedback{margin-top:8px;font-size:12.5px;padding:8px 12px;border-radius:7px;display:none;line-height:1.5;}
+.pipe-feedback.show{display:block;}
+.pipe-feedback.good{background:rgba(16,185,129,.1);color:#6ee7b7;}
+.pipe-feedback.bad{background:rgba(239,68,68,.08);color:#fca5a5;}
+.pipe-progress-wrap{background:var(--surface2);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.pipe-progress-bar{flex:1;height:5px;background:var(--bg);border-radius:100px;overflow:hidden;}
+.pipe-progress-fill{height:100%;background:linear-gradient(90deg,var(--d3),var(--pass));border-radius:100px;transition:width .4s;}
+
+/* ── CHEAT SHEETS ── */
+.cheatsheet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:14px;}
+.cs-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;transition:transform .2s;}
+.cs-card:hover{transform:translateY(-2px);}
+.cs-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+.cs-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.cs-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.cs-table tr{border-bottom:1px solid var(--border);}
+.cs-table tr:last-child{border-bottom:none;}
+.cs-table td{padding:7px 4px;vertical-align:top;line-height:1.5;}
+.cs-table td:first-child{color:var(--muted);width:40%;padding-right:10px;font-family:'DM Mono',monospace;font-size:11px;}
+.cs-list{list-style:none;}
+.cs-list li{padding:6px 0;font-size:13px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:7px;line-height:1.5;}
+.cs-list li:last-child{border-bottom:none;}
+.cs-list li::before{content:'→';color:var(--accent);font-family:'DM Mono',monospace;flex-shrink:0;}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.compare-col-title{font-family:'DM Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;padding:5px 8px;border-radius:6px 6px 0 0;margin-bottom:2px;font-weight:500;}
+.compare-item{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:12px;margin-bottom:5px;line-height:1.4;}
+
+/* ── SCENARIOS ── */
+.scenario-wrapper{display:grid;gap:18px;}
+.scenario-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.scenario-header{padding:18px 22px;display:flex;gap:12px;align-items:flex-start;border-bottom:1px solid var(--border);}
+.sc-domain-tag{font-family:'DM Mono',monospace;font-size:10px;padding:3px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:.08em;flex-shrink:0;margin-top:2px;}
+.scenario-q{font-size:14.5px;font-weight:500;line-height:1.6;flex:1;}
+.scenario-context{padding:12px 22px;background:rgba(255,255,255,.02);font-size:13px;color:var(--muted);font-style:italic;line-height:1.6;border-bottom:1px solid var(--border);}
+.options-list{padding:14px 22px;display:grid;gap:7px;}
+.option-btn{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:11px 14px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;text-align:left;display:flex;align-items:flex-start;gap:10px;line-height:1.5;transition:all .2s;}
+.option-btn:hover:not(:disabled){border-color:rgba(96,165,250,.4);background:rgba(59,130,246,.05);}
+.option-btn.correct{border-color:var(--pass);background:rgba(16,185,129,.1);color:#6ee7b7;}
+.option-btn.wrong{border-color:var(--fail);background:rgba(239,68,68,.08);color:#fca5a5;}
+.option-btn.reveal-correct{border-color:var(--pass);background:rgba(16,185,129,.05);color:var(--muted);}
+.option-key{font-family:'DM Mono',monospace;font-size:11px;min-width:18px;padding-top:1px;opacity:.6;flex-shrink:0;}
+.explanation{display:none;padding:14px 22px;background:var(--surface2);border-top:1px solid var(--border);font-size:13px;line-height:1.7;}
+.explanation.show{display:block;animation:fadeIn .3s ease;}
+.explanation strong{color:var(--accent);}
+.scenario-footer{padding:10px 22px;display:flex;justify-content:flex-end;border-top:1px solid var(--border);}
+.reset-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+.progress-bar-outer{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;}
+.progress-label{font-size:13px;color:var(--muted);white-space:nowrap;}
+.progress-track{flex:1;height:5px;background:var(--bg);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--d1),var(--d2));border-radius:100px;transition:width .4s;}
+.progress-count{font-family:'DM Mono',monospace;font-size:12px;color:var(--accent);white-space:nowrap;}
+
+/* ── TIPS ── */
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.tip-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:13px;line-height:1.6;position:relative;overflow:hidden;}
+.tip-emoji{font-size:1.5rem;margin-bottom:8px;display:block;}
+.tip-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:7px;}
+
+@media(max-width:580px){
+  .hero{padding:36px 16px 22px;}
+  .nav{padding:14px 12px;}
+  .content{padding:0 12px 60px;}
+  .domain-header{padding:14px 16px;}
+  .compare-grid{grid-template-columns:1fr;}
+  h1{font-size:1.9rem;}
+  .yaml-builder{grid-template-columns:1fr;}
+  .dnd-area{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<div class="hero">
+  <div class="badge">AZ-400 · DevOps Engineer Expert</div>
+  <h1>Study Hub</h1>
+  <p class="subtitle">Beginner-friendly · Interactive · Hands-on · Updated 2025</p>
+  <div class="weight-bar-container">
+    <div class="weight-bar-title">⚖ Exam weight distribution — where to focus your time</div>
+    <div class="weight-bar">
+      <div class="weight-seg" style="background:#3b82f6;width:12.5%">12.5%</div>
+      <div class="weight-seg" style="background:#8b5cf6;width:12.5%">12.5%</div>
+      <div class="weight-seg" style="background:#f59e0b;width:52.5%">~52% 🔥</div>
+      <div class="weight-seg" style="background:#ef4444;width:12.5%">12.5%</div>
+      <div class="weight-seg" style="background:#10b981;width:7.5%">7.5%</div>
+    </div>
+    <div class="weight-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Processes &amp; Comms (10–15%)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div>Source Control (10–15%)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>Build &amp; Release Pipelines (50–55%) 🔥</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Security &amp; Compliance (10–15%)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>Instrumentation (5–10%)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav">
+  <button class="tab-btn active" onclick="showTab('domains',this)">📚 Domain Overview</button>
+  <button class="tab-btn" onclick="showTab('cheatsheet',this)">⚡ Cheat Sheets</button>
+  <button class="tab-btn" onclick="showTab('scenarios',this)">🎯 Scenario Challenges</button>
+  <button class="tab-btn" onclick="showTab('tips',this)">💡 Exam Tips</button>
+</nav>
+
+<div class="content">
+
+<!-- ═══════════════════════════════════════
+     TAB 1: DOMAIN OVERVIEW
+═══════════════════════════════════════ -->
+<div id="tab-domains" class="tab-panel active">
+  <div class="section-label">5 exam domains — click any to expand theory + hands-on activities</div>
+  <div class="domains-grid">
+
+    <!-- ─── DOMAIN 1 ─── -->
+    <div class="domain-card c1" id="d1">
+      <div class="domain-header" onclick="toggleDomain('d1')">
+        <div class="domain-num" style="background:#3b82f6">D1</div>
+        <div class="domain-info">
+          <div class="domain-name">Processes &amp; Communications</div>
+          <div class="domain-meta"><span class="weight-pill">10–15% of exam</span><span style="font-size:12px;color:#8899aa">≈ 6–9 questions</span></div>
+        </div>
+        <span class="domain-emoji">🗣️</span><span class="chevron">▾</span>
+      </div>
+      <div class="domain-body">
+        <div class="what-is c1"><strong>What is this?</strong><br>The "people and process" side of DevOps — project tracking, planning, metrics, and keeping teams aligned. Think Azure Boards, DORA metrics, and feedback loops.</div>
+        <div class="topics-grid">
+          <div class="topic-chip"><span class="icon">📋</span><span>Work item traceability — linking code to user stories &amp; bugs</span></div>
+          <div class="topic-chip"><span class="icon">📊</span><span>DevOps metrics — lead time, cycle time, deployment frequency</span></div>
+          <div class="topic-chip"><span class="icon">🔄</span><span>Agile/Scrum boards in Azure DevOps</span></div>
+          <div class="topic-chip"><span class="icon">💬</span><span>Team collaboration tools &amp; wikis</span></div>
+          <div class="topic-chip"><span class="icon">📈</span><span>Feedback loops &amp; retrospectives</span></div>
+          <div class="topic-chip"><span class="icon">🎯</span><span>Defining project goals &amp; success metrics</span></div>
+        </div>
+        <div class="key-tools"><span class="tools-label">Key Tools →</span><span class="tool-tag">Azure Boards</span><span class="tool-tag">Azure DevOps Wiki</span><span class="tool-tag">GitHub Issues</span><span class="tool-tag">DORA Metrics</span></div>
+
+        <!-- ACTIVITIES D1 -->
+        <div class="activity-panel" style="margin-top:18px;">
+          <div class="activity-tabs">
+            <button class="act-tab active" onclick="switchAct('d1','flash',this)"><span class="act-icon">🃏</span>Flashcards</button>
+            <button class="act-tab" onclick="switchAct('d1','dnd',this)"><span class="act-icon">🧩</span>Drag &amp; Drop</button>
+          </div>
+          <div class="activity-content">
+            <!-- FLASHCARDS D1 -->
+            <div class="act-pane active" id="d1-flash">
+              <p class="flashcard-hint">👆 Click a card to flip it and reveal the answer</p>
+              <div class="flashcard-row">
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What does <strong>Lead Time for Changes</strong> measure?</div>
+                    <div class="flashcard-face flashcard-back">Time from a code commit being made → to it running in production. Measures delivery speed.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What does <strong>MTTR</strong> stand for and measure?</div>
+                    <div class="flashcard-face flashcard-back">Mean Time To Recovery — how quickly your team restores service after a production failure.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is <strong>Change Failure Rate</strong>?</div>
+                    <div class="flashcard-face flashcard-back">The % of deployments that cause a failure in production. Lower is better. One of the 4 DORA metrics.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">Name the <strong>4 DORA metrics</strong></div>
+                    <div class="flashcard-face flashcard-back">1. Deployment Frequency<br>2. Lead Time for Changes<br>3. Change Failure Rate<br>4. MTTR</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- DRAG & DROP D1 -->
+            <div class="act-pane" id="d1-dnd">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Match each DORA metric to what it actually measures. Drag the descriptions to the correct metric.</p>
+              <div class="dnd-area" id="dnd-d1">
+                <div class="dnd-source">
+                  <div class="dnd-label">Descriptions (drag these)</div>
+                  <div class="dnd-items" id="dnd-d1-src">
+                    <div class="dnd-item" draggable="true" data-id="df">📅 How often code is released to production</div>
+                    <div class="dnd-item" draggable="true" data-id="lt">⏱ Commit to production deployment time</div>
+                    <div class="dnd-item" draggable="true" data-id="cfr">💥 % of deploys that break production</div>
+                    <div class="dnd-item" draggable="true" data-id="mttr">🔧 How fast you fix production outages</div>
+                  </div>
+                </div>
+                <div class="dnd-target">
+                  <div class="dnd-label">DORA Metrics (drop here)</div>
+                  <div class="dnd-items">
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace;">Deployment Frequency</div>
+                    <div class="dnd-zone" data-answer="df" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">Lead Time for Changes</div>
+                    <div class="dnd-zone" data-answer="lt" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">Change Failure Rate</div>
+                    <div class="dnd-zone" data-answer="cfr" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">MTTR</div>
+                    <div class="dnd-zone" data-answer="mttr" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dnd-result" id="dnd-d1-result"></div>
+              <button class="dnd-reset" onclick="resetDnd('d1')">↺ Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DOMAIN 2 ─── -->
+    <div class="domain-card c2" id="d2">
+      <div class="domain-header" onclick="toggleDomain('d2')">
+        <div class="domain-num" style="background:#8b5cf6">D2</div>
+        <div class="domain-info">
+          <div class="domain-name">Source Control Strategy</div>
+          <div class="domain-meta"><span class="weight-pill">10–15% of exam</span><span style="font-size:12px;color:#8899aa">≈ 6–9 questions</span></div>
+        </div>
+        <span class="domain-emoji">🌿</span><span class="chevron">▾</span>
+      </div>
+      <div class="domain-body">
+        <div class="what-is c2"><strong>What is this?</strong><br>Everything about managing code using Git at enterprise scale — branching strategies, pull requests, code review policies, and protecting your main branch.</div>
+        <div class="topics-grid">
+          <div class="topic-chip"><span class="icon">🌿</span><span>Branching strategies — Trunk-Based, GitFlow, GitHub Flow</span></div>
+          <div class="topic-chip"><span class="icon">🔍</span><span>Pull requests &amp; code review policies</span></div>
+          <div class="topic-chip"><span class="icon">🏷️</span><span>Tagging &amp; versioning releases</span></div>
+          <div class="topic-chip"><span class="icon">📦</span><span>Monorepos vs multi-repos</span></div>
+          <div class="topic-chip"><span class="icon">🔒</span><span>Branch protection rules &amp; permissions</span></div>
+          <div class="topic-chip"><span class="icon">🔀</span><span>Git hooks &amp; automated validation</span></div>
+        </div>
+        <div class="key-tools"><span class="tools-label">Key Tools →</span><span class="tool-tag">Azure Repos</span><span class="tool-tag">GitHub</span><span class="tool-tag">Git</span></div>
+
+        <!-- ACTIVITIES D2 -->
+        <div class="activity-panel" style="margin-top:18px;">
+          <div class="activity-tabs">
+            <button class="act-tab active" onclick="switchAct('d2','flash',this)"><span class="act-icon">🃏</span>Flashcards</button>
+            <button class="act-tab" onclick="switchAct('d2','dnd',this)"><span class="act-icon">🧩</span>Drag &amp; Drop</button>
+          </div>
+          <div class="activity-content">
+            <!-- FLASHCARDS D2 -->
+            <div class="act-pane active" id="d2-flash">
+              <p class="flashcard-hint">👆 Click a card to flip it</p>
+              <div class="flashcard-row">
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">Which branching strategy is best for <strong>continuous deployment</strong> teams?</div>
+                    <div class="flashcard-face flashcard-back">Trunk-Based Development — all devs commit to main with short-lived feature branches (&lt;2 days).</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is a <strong>monorepo</strong>?</div>
+                    <div class="flashcard-face flashcard-back">A single repository that holds code for multiple projects or services. Easier to share code; harder to scale permissions.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What does a <strong>branch protection rule</strong> enforce?</div>
+                    <div class="flashcard-face flashcard-back">Prevents direct pushes to main. Requires PRs, approvals, and passing checks before merging.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">When should you use <strong>GitFlow</strong>?</div>
+                    <div class="flashcard-face flashcard-back">When you have scheduled releases with multiple environments (dev → staging → prod) and need hotfix support.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- DRAG & DROP D2 -->
+            <div class="act-pane" id="d2-dnd">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Match each branching strategy to its best use case.</p>
+              <div class="dnd-area" id="dnd-d2">
+                <div class="dnd-source">
+                  <div class="dnd-label">Use Cases (drag these)</div>
+                  <div class="dnd-items" id="dnd-d2-src">
+                    <div class="dnd-item" draggable="true" data-id="trunk">🚀 20 devs deploying to prod multiple times per day</div>
+                    <div class="dnd-item" draggable="true" data-id="gitflow">📅 Monthly release cycles with staging &amp; hotfix lanes</div>
+                    <div class="dnd-item" draggable="true" data-id="fork">🌐 External contributors to an open-source project</div>
+                  </div>
+                </div>
+                <div class="dnd-target">
+                  <div class="dnd-label">Strategies</div>
+                  <div class="dnd-items">
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace;">Trunk-Based Development</div>
+                    <div class="dnd-zone" data-answer="trunk" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">GitFlow</div>
+                    <div class="dnd-zone" data-answer="gitflow" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">Forking Workflow</div>
+                    <div class="dnd-zone" data-answer="fork" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dnd-result" id="dnd-d2-result"></div>
+              <button class="dnd-reset" onclick="resetDnd('d2')">↺ Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DOMAIN 3 ─── -->
+    <div class="domain-card c3" id="d3">
+      <div class="domain-header" onclick="toggleDomain('d3')">
+        <div class="domain-num" style="background:#f59e0b">D3</div>
+        <div class="domain-info">
+          <div class="domain-name">Build &amp; Release Pipelines</div>
+          <div class="domain-meta"><span class="weight-pill big">50–55% of exam 🔥</span><span style="font-size:12px;color:#8899aa">≈ 30–35 questions</span></div>
+        </div>
+        <span class="domain-emoji">🚀</span><span class="chevron">▾</span>
+      </div>
+      <div class="domain-body">
+        <div class="what-is c3"><strong>What is this?</strong><br>Over half the exam! CI/CD pipelines automatically build, test, and deploy your code. Code goes in → tests run → gets packaged → deployed to Azure. All automatically.</div>
+        <div class="topics-grid">
+          <div class="topic-chip"><span class="icon">⚙️</span><span>YAML pipelines in Azure DevOps</span></div>
+          <div class="topic-chip"><span class="icon">🧪</span><span>Automated testing — unit, integration, load</span></div>
+          <div class="topic-chip"><span class="icon">🐳</span><span>Container builds with Docker</span></div>
+          <div class="topic-chip"><span class="icon">📦</span><span>Artefact management (Azure Artifacts)</span></div>
+          <div class="topic-chip"><span class="icon">🚢</span><span>Deployment strategies — Blue/Green, Canary, Rolling</span></div>
+          <div class="topic-chip"><span class="icon">🏗️</span><span>Infrastructure as Code — Bicep, ARM, Terraform</span></div>
+          <div class="topic-chip"><span class="icon">🌍</span><span>Release gates &amp; environment approvals</span></div>
+          <div class="topic-chip"><span class="icon">⚡</span><span>GitHub Actions vs Azure Pipelines</span></div>
+        </div>
+        <div class="key-tools"><span class="tools-label">Key Tools →</span><span class="tool-tag">Azure Pipelines</span><span class="tool-tag">GitHub Actions</span><span class="tool-tag">Azure Artifacts</span><span class="tool-tag">Docker</span><span class="tool-tag">Bicep</span><span class="tool-tag">Terraform</span></div>
+
+        <!-- ACTIVITIES D3 — 4 tabs -->
+        <div class="activity-panel" style="margin-top:18px;">
+          <div class="activity-tabs">
+            <button class="act-tab active" onclick="switchAct('d3','flash',this)"><span class="act-icon">🃏</span>Flashcards</button>
+            <button class="act-tab" onclick="switchAct('d3','dnd',this)"><span class="act-icon">🧩</span>Drag &amp; Drop</button>
+            <button class="act-tab" onclick="switchAct('d3','yaml',this)"><span class="act-icon">⚙️</span>YAML Builder</button>
+            <button class="act-tab" onclick="switchAct('d3','pipe',this)"><span class="act-icon">🚀</span>Pipeline Challenge</button>
+          </div>
+          <div class="activity-content">
+            <!-- FLASHCARDS D3 -->
+            <div class="act-pane active" id="d3-flash">
+              <p class="flashcard-hint">👆 Click a card to flip it</p>
+              <div class="flashcard-row">
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is the difference between <strong>CI</strong> and <strong>CD</strong>?</div>
+                    <div class="flashcard-face flashcard-back">CI = auto build &amp; test every commit. CD (Delivery) = always ready to deploy with human approval. CD (Deployment) = fully automatic to production.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is a <strong>Blue/Green</strong> deployment?</div>
+                    <div class="flashcard-face flashcard-back">Two identical environments. Blue = live. Green = new version. Flip traffic to Green. If it fails, flip back instantly. Zero-downtime rollback.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What does a <strong>pipeline agent</strong> do?</div>
+                    <div class="flashcard-face flashcard-back">The machine that runs your pipeline jobs. Can be Microsoft-hosted (managed for you) or self-hosted (your own VM).</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is a <strong>Canary</strong> deployment?</div>
+                    <div class="flashcard-face flashcard-back">Release to a small % of users first (e.g. 5%). Monitor for errors. Gradually increase traffic if healthy. Safe way to catch issues early.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DRAG & DROP D3 -->
+            <div class="act-pane" id="d3-dnd">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Arrange these pipeline stages into the correct order — drag them into position.</p>
+              <div style="margin-bottom:10px;">
+                <div class="dnd-label">Pipeline stages — drag into the correct order below</div>
+                <div class="dnd-items" id="dnd-d3-src">
+                  <div class="dnd-item" draggable="true" data-id="s3">🧪 Run automated tests</div>
+                  <div class="dnd-item" draggable="true" data-id="s1">📥 Checkout source code</div>
+                  <div class="dnd-item" draggable="true" data-id="s5">🚀 Deploy to production</div>
+                  <div class="dnd-item" draggable="true" data-id="s4">📦 Publish build artefact</div>
+                  <div class="dnd-item" draggable="true" data-id="s2">⚙️ Build / compile the app</div>
+                </div>
+              </div>
+              <div class="dnd-label">Correct pipeline order →</div>
+              <div style="display:flex;flex-direction:column;gap:6px;" id="dnd-d3-target">
+                <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);width:32px">Step 1</span><div class="dnd-zone" style="flex:1" data-answer="s1" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);width:32px">Step 2</span><div class="dnd-zone" style="flex:1" data-answer="s2" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);width:32px">Step 3</span><div class="dnd-zone" style="flex:1" data-answer="s3" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);width:32px">Step 4</span><div class="dnd-zone" style="flex:1" data-answer="s4" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);width:32px">Step 5</span><div class="dnd-zone" style="flex:1" data-answer="s5" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div></div>
+              </div>
+              <div class="dnd-result" id="dnd-d3-result"></div>
+              <button class="dnd-reset" onclick="resetDnd('d3')">↺ Reset</button>
+            </div>
+
+            <!-- YAML BUILDER D3 -->
+            <div class="act-pane" id="d3-yaml">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">🏗️ <strong style="color:var(--text)">Build a YAML pipeline</strong> — click blocks to add them. See how a real Azure Pipelines YAML file comes together.</p>
+              <div class="yaml-builder">
+                <div>
+                  <div class="dnd-label">Add blocks to your pipeline</div>
+                  <div class="yaml-controls" id="yaml-blocks">
+                    <button class="yaml-block-btn" onclick="addYamlBlock('trigger')"><span>📡</span><div><div style="color:var(--d3);font-weight:600">trigger:</div><div class="block-key">When does the pipeline run?</div></div></button>
+                    <button class="yaml-block-btn" onclick="addYamlBlock('pool')"><span>🖥️</span><div><div style="color:var(--d3);font-weight:600">pool:</div><div class="block-key">Where does it run?</div></div></button>
+                    <button class="yaml-block-btn" onclick="addYamlBlock('variables')"><span>🔑</span><div><div style="color:var(--d3);font-weight:600">variables:</div><div class="block-key">Set reusable values</div></div></button>
+                    <button class="yaml-block-btn" onclick="addYamlBlock('stages')"><span>🎬</span><div><div style="color:var(--d3);font-weight:600">stages:</div><div class="block-key">Build &amp; Deploy stages</div></div></button>
+                    <button class="yaml-block-btn" onclick="addYamlBlock('steps')"><span>📋</span><div><div style="color:var(--d3);font-weight:600">steps:</div><div class="block-key">Individual tasks</div></div></button>
+                    <button class="yaml-block-btn" onclick="addYamlBlock('approval')"><span>✅</span><div><div style="color:var(--d3);font-weight:600">environment approval</div><div class="block-key">Human gate before deploy</div></div></button>
+                  </div>
+                  <button class="yaml-clear" onclick="clearYaml()">🗑 Clear pipeline</button>
+                  <div class="yaml-validate" id="yaml-validate"></div>
+                </div>
+                <div>
+                  <div class="dnd-label">Your pipeline YAML</div>
+                  <div class="yaml-output" id="yaml-output"><span style="color:var(--muted);font-style:italic;font-size:12px;"># Click blocks on the left to build your pipeline...</span></div>
+                  <p class="yaml-tip">💡 In real Azure DevOps, this YAML lives in a file called <strong>azure-pipelines.yml</strong> at the root of your repo.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- PIPELINE CHALLENGE D3 -->
+            <div class="act-pane" id="d3-pipe">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">🎯 <strong style="color:var(--text)">Build-a-Pipeline challenge</strong> — make the right decision at each step to build a production-ready pipeline.</p>
+              <div id="pipe-challenge-d3">
+                <div class="pipe-progress-wrap" style="margin-bottom:14px;">
+                  <span style="font-size:12px;color:var(--muted)">Progress</span>
+                  <div class="pipe-progress-bar"><div class="pipe-progress-fill" id="pipe-d3-fill" style="width:0%"></div></div>
+                  <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--accent)" id="pipe-d3-count">0 / 4</span>
+                </div>
+                <div class="pipe-steps" id="pipe-d3-steps"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DOMAIN 4 ─── -->
+    <div class="domain-card c4" id="d4">
+      <div class="domain-header" onclick="toggleDomain('d4')">
+        <div class="domain-num" style="background:#ef4444">D4</div>
+        <div class="domain-info">
+          <div class="domain-name">Security &amp; Compliance Plan</div>
+          <div class="domain-meta"><span class="weight-pill">10–15% of exam</span><span style="font-size:12px;color:#8899aa">≈ 6–9 questions</span></div>
+        </div>
+        <span class="domain-emoji">🔐</span><span class="chevron">▾</span>
+      </div>
+      <div class="domain-body">
+        <div class="what-is c4"><strong>What is this?</strong><br>DevSecOps — baking security into your pipelines. Secrets management, automated vulnerability scanning, and enforcing governance policies across Azure.</div>
+        <div class="topics-grid">
+          <div class="topic-chip"><span class="icon">🗝️</span><span>Azure Key Vault — secrets, certs &amp; keys</span></div>
+          <div class="topic-chip"><span class="icon">🔍</span><span>SAST &amp; DAST — automated code security scanning</span></div>
+          <div class="topic-chip"><span class="icon">📜</span><span>Azure Policy — enforcing governance at scale</span></div>
+          <div class="topic-chip"><span class="icon">🛡️</span><span>Defender for DevOps</span></div>
+          <div class="topic-chip"><span class="icon">📋</span><span>Open source dependency scanning</span></div>
+          <div class="topic-chip"><span class="icon">🔑</span><span>Service connections &amp; least-privilege access</span></div>
+        </div>
+        <div class="key-tools"><span class="tools-label">Key Tools →</span><span class="tool-tag">Azure Key Vault</span><span class="tool-tag">Azure Policy</span><span class="tool-tag">Defender for DevOps</span><span class="tool-tag">SonarQube</span></div>
+
+        <!-- ACTIVITIES D4 -->
+        <div class="activity-panel" style="margin-top:18px;">
+          <div class="activity-tabs">
+            <button class="act-tab active" onclick="switchAct('d4','flash',this)"><span class="act-icon">🃏</span>Flashcards</button>
+            <button class="act-tab" onclick="switchAct('d4','dnd',this)"><span class="act-icon">🧩</span>Drag &amp; Drop</button>
+          </div>
+          <div class="activity-content">
+            <!-- FLASHCARDS D4 -->
+            <div class="act-pane active" id="d4-flash">
+              <p class="flashcard-hint">👆 Click a card to flip it</p>
+              <div class="flashcard-row">
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">How do you securely use a Key Vault secret in a pipeline?</div>
+                    <div class="flashcard-face flashcard-back">Create a Variable Group in Azure DevOps linked to Key Vault. Reference the group in your YAML. The secret is never exposed in code or logs.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is the difference between <strong>SAST</strong> and <strong>DAST</strong>?</div>
+                    <div class="flashcard-face flashcard-back">SAST = Static — scans source code without running it. DAST = Dynamic — tests a running application by simulating real attacks.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is <strong>least privilege</strong> in a pipeline context?</div>
+                    <div class="flashcard-face flashcard-back">Service connections and agents should only have the permissions they actually need — nothing more. Reduces blast radius if compromised.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What does <strong>SCA</strong> scan for?</div>
+                    <div class="flashcard-face flashcard-back">Software Composition Analysis — scans your open-source dependencies (npm packages, NuGet etc.) for known CVEs and licence issues.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- DRAG & DROP D4 -->
+            <div class="act-pane" id="d4-dnd">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Match each security scanning type to what it tests.</p>
+              <div class="dnd-area" id="dnd-d4">
+                <div class="dnd-source">
+                  <div class="dnd-label">What it tests (drag these)</div>
+                  <div class="dnd-items" id="dnd-d4-src">
+                    <div class="dnd-item" draggable="true" data-id="sast">📄 Scans source code files without running the app</div>
+                    <div class="dnd-item" draggable="true" data-id="dast">🌐 Simulates attacks against a running application</div>
+                    <div class="dnd-item" draggable="true" data-id="sca">📦 Checks open-source packages for known CVEs</div>
+                  </div>
+                </div>
+                <div class="dnd-target">
+                  <div class="dnd-label">Scan type</div>
+                  <div class="dnd-items">
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace;">SAST</div>
+                    <div class="dnd-zone" data-answer="sast" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">DAST</div>
+                    <div class="dnd-zone" data-answer="dast" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">SCA</div>
+                    <div class="dnd-zone" data-answer="sca" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dnd-result" id="dnd-d4-result"></div>
+              <button class="dnd-reset" onclick="resetDnd('d4')">↺ Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── DOMAIN 5 ─── -->
+    <div class="domain-card c5" id="d5">
+      <div class="domain-header" onclick="toggleDomain('d5')">
+        <div class="domain-num" style="background:#10b981">D5</div>
+        <div class="domain-info">
+          <div class="domain-name">Instrumentation Strategy</div>
+          <div class="domain-meta"><span class="weight-pill">5–10% of exam</span><span style="font-size:12px;color:#8899aa">≈ 3–6 questions</span></div>
+        </div>
+        <span class="domain-emoji">📊</span><span class="chevron">▾</span>
+      </div>
+      <div class="domain-body">
+        <div class="what-is c5"><strong>What is this?</strong><br>Monitoring and observing your applications once deployed. Know when things go wrong before your users do — alerts, dashboards, logs, SLOs.</div>
+        <div class="topics-grid">
+          <div class="topic-chip"><span class="icon">📡</span><span>Azure Monitor — metrics, logs &amp; alerts</span></div>
+          <div class="topic-chip"><span class="icon">🔭</span><span>Application Insights — APM &amp; distributed tracing</span></div>
+          <div class="topic-chip"><span class="icon">📋</span><span>Log Analytics &amp; KQL queries</span></div>
+          <div class="topic-chip"><span class="icon">📉</span><span>SLOs, SLIs &amp; error budgets</span></div>
+          <div class="topic-chip"><span class="icon">🔔</span><span>Alerts &amp; action groups</span></div>
+          <div class="topic-chip"><span class="icon">📊</span><span>Dashboards &amp; workbooks</span></div>
+        </div>
+        <div class="key-tools"><span class="tools-label">Key Tools →</span><span class="tool-tag">Azure Monitor</span><span class="tool-tag">Application Insights</span><span class="tool-tag">Log Analytics</span><span class="tool-tag">KQL</span></div>
+
+        <!-- ACTIVITIES D5 -->
+        <div class="activity-panel" style="margin-top:18px;">
+          <div class="activity-tabs">
+            <button class="act-tab active" onclick="switchAct('d5','flash',this)"><span class="act-icon">🃏</span>Flashcards</button>
+            <button class="act-tab" onclick="switchAct('d5','dnd',this)"><span class="act-icon">🧩</span>Drag &amp; Drop</button>
+          </div>
+          <div class="activity-content">
+            <!-- FLASHCARDS D5 -->
+            <div class="act-pane active" id="d5-flash">
+              <p class="flashcard-hint">👆 Click a card to flip it</p>
+              <div class="flashcard-row">
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is the difference between <strong>SLI</strong>, <strong>SLO</strong>, and <strong>SLA</strong>?</div>
+                    <div class="flashcard-face flashcard-back">SLI = the measurement (e.g. uptime %). SLO = your internal target (e.g. 99.9%). SLA = the contract with your customer.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What is an <strong>error budget</strong>?</div>
+                    <div class="flashcard-face flashcard-back">The amount of downtime/errors you're allowed before breaching your SLO. If budget runs out, slow down releases until reliability improves.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What does <strong>Application Insights</strong> provide that Log Analytics doesn't?</div>
+                    <div class="flashcard-face flashcard-back">Distributed tracing — it tracks a single request as it flows across multiple services, showing exactly where delays or errors occur.</div>
+                  </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                  <div class="flashcard-inner">
+                    <div class="flashcard-face flashcard-front">What language do you use to query <strong>Log Analytics</strong>?</div>
+                    <div class="flashcard-face flashcard-back">KQL — Kusto Query Language. Example: <code style="font-size:11px">requests | where resultCode == 500 | summarize count() by bin(timestamp, 1h)</code></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- DRAG & DROP D5 -->
+            <div class="act-pane" id="d5-dnd">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Match each monitoring scenario to the correct Azure tool.</p>
+              <div class="dnd-area" id="dnd-d5">
+                <div class="dnd-source">
+                  <div class="dnd-label">Scenarios (drag these)</div>
+                  <div class="dnd-items" id="dnd-d5-src">
+                    <div class="dnd-item" draggable="true" data-id="appins">🔍 Trace a slow HTTP request across 5 microservices</div>
+                    <div class="dnd-item" draggable="true" data-id="monitor">🔔 Alert me when CPU on a VM exceeds 90%</div>
+                    <div class="dnd-item" draggable="true" data-id="kql">📝 Query all 500 errors in the last 24 hours</div>
+                  </div>
+                </div>
+                <div class="dnd-target">
+                  <div class="dnd-label">Azure Tool</div>
+                  <div class="dnd-items">
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace;">Application Insights</div>
+                    <div class="dnd-zone" data-answer="appins" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">Azure Monitor Alerts</div>
+                    <div class="dnd-zone" data-answer="monitor" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;font-family:'DM Mono',monospace;">Log Analytics (KQL)</div>
+                    <div class="dnd-zone" data-answer="kql" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="dnd-result" id="dnd-d5-result"></div>
+              <button class="dnd-reset" onclick="resetDnd('d5')">↺ Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /domains-grid -->
+</div><!-- /tab-domains -->
+
+
+<!-- ═══════════════════════════════════════
+     TAB 2: CHEAT SHEETS
+═══════════════════════════════════════ -->
+<div id="tab-cheatsheet" class="tab-panel">
+  <div class="section-label">Visual quick-reference — the stuff you MUST know</div>
+  <div class="cheatsheet-grid">
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(139,92,246,.15);color:#a78bfa">🌿</div>Branching Strategies</div>
+      <table class="cs-table">
+        <tr><td>Trunk-Based</td><td>All devs commit to main. Short-lived branches only. Best for high-frequency deploys.</td></tr>
+        <tr><td>GitFlow</td><td>Feature→Develop→Release→Main. Good for scheduled releases.</td></tr>
+        <tr><td>GitHub Flow</td><td>Feature branch → PR → merge to main → deploy. Simple, continuous.</td></tr>
+        <tr><td>Forking</td><td>Contributors fork the repo. Common in open-source projects.</td></tr>
+      </table>
+    </div>
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(245,158,11,.15);color:#f59e0b">🚢</div>Deployment Strategies</div>
+      <table class="cs-table">
+        <tr><td>Blue/Green</td><td>Two identical environments. Flip traffic instantly. Easy rollback.</td></tr>
+        <tr><td>Canary</td><td>Release to small % of users first. Monitor, then increase gradually.</td></tr>
+        <tr><td>Rolling</td><td>Replace instances one by one. No downtime but slower rollback.</td></tr>
+        <tr><td>Feature Flags</td><td>Deploy code but keep feature hidden. Toggle on per user/group.</td></tr>
+      </table>
+    </div>
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(59,130,246,.15);color:#60a5fa">📊</div>DORA Metrics (Must Know!)</div>
+      <table class="cs-table">
+        <tr><td>Deployment Frequency</td><td>How often you release to production</td></tr>
+        <tr><td>Lead Time</td><td>Code commit → production deployment time</td></tr>
+        <tr><td>Change Failure Rate</td><td>% of deployments causing a failure</td></tr>
+        <tr><td>MTTR</td><td>How quickly you recover from failure</td></tr>
+      </table>
+    </div>
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(239,68,68,.15);color:#f87171">🗝️</div>Secrets Management</div>
+      <ul class="cs-list">
+        <li>Store secrets in <strong>Azure Key Vault</strong> — never hardcode in YAML</li>
+        <li>Reference via <strong>variable groups</strong> linked to Key Vault</li>
+        <li>Use <strong>managed identities</strong> instead of service principal secrets</li>
+        <li>Rotate secrets regularly — set expiry dates in Key Vault</li>
+        <li><strong>Never</strong> log secrets — mask variables in pipeline output</li>
+      </ul>
+    </div>
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(16,185,129,.15);color:#34d399">📡</div>Azure Monitor Hierarchy</div>
+      <table class="cs-table">
+        <tr><td>Azure Monitor</td><td>Top-level platform for all monitoring &amp; alerting</td></tr>
+        <tr><td>App Insights</td><td>Application APM — traces, exceptions, performance</td></tr>
+        <tr><td>Log Analytics</td><td>Central log store — query with KQL</td></tr>
+        <tr><td>Metrics</td><td>Numeric time-series data — CPU, memory, requests/sec</td></tr>
+        <tr><td>Alerts</td><td>Triggered by metric/log conditions → Action Groups</td></tr>
+      </table>
+    </div>
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(245,158,11,.15);color:#f59e0b">⚙️</div>Azure Pipelines vs GitHub Actions</div>
+      <div class="compare-grid">
+        <div>
+          <div class="compare-col-title" style="background:rgba(59,130,246,.15);color:#60a5fa">Azure Pipelines</div>
+          <div class="compare-item">YAML or Classic GUI pipelines</div>
+          <div class="compare-item">Agent pools (hosted + self)</div>
+          <div class="compare-item">Built-in release gates</div>
+          <div class="compare-item">Deep Azure integration</div>
+        </div>
+        <div>
+          <div class="compare-col-title" style="background:rgba(139,92,246,.15);color:#a78bfa">GitHub Actions</div>
+          <div class="compare-item">YAML in .github/workflows</div>
+          <div class="compare-item">GitHub-hosted runners</div>
+          <div class="compare-item">Marketplace actions</div>
+          <div class="compare-item">Native to GitHub repos</div>
+        </div>
+      </div>
+    </div>
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(59,130,246,.15);color:#60a5fa">🏗️</div>IaC Options</div>
+      <table class="cs-table">
+        <tr><td>ARM Templates</td><td>Native Azure JSON. Verbose but full feature support.</td></tr>
+        <tr><td>Bicep</td><td>Microsoft DSL for ARM. Cleaner syntax, same capabilities. Azure-native preferred.</td></tr>
+        <tr><td>Terraform</td><td>HashiCorp multi-cloud IaC. Best for Azure + AWS + GCP.</td></tr>
+      </table>
+    </div>
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(239,68,68,.15);color:#f87171">🔍</div>Security Scanning Types</div>
+      <table class="cs-table">
+        <tr><td>SAST</td><td><strong>Static</strong> — scans source code. Finds code-level vulns without running app.</td></tr>
+        <tr><td>DAST</td><td><strong>Dynamic</strong> — tests running app. Simulates real attacks.</td></tr>
+        <tr><td>SCA</td><td>Scans open-source dependencies for known CVEs.</td></tr>
+        <tr><td>Container Scan</td><td>Scans Docker images before pushing to registry.</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     TAB 3: SCENARIO CHALLENGES
+═══════════════════════════════════════ -->
+<div id="tab-scenarios" class="tab-panel">
+  <div class="section-label">Scenario challenges — pick the best answer, then see why</div>
+  <div class="progress-bar-outer">
+    <span class="progress-label">Progress</span>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <span class="progress-count" id="progress-count">0 / 8 answered</span>
+  </div>
+  <div class="scenario-wrapper" id="scenarios-container"></div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     TAB 4: EXAM TIPS
+═══════════════════════════════════════ -->
+<div id="tab-tips" class="tab-panel">
+  <div class="section-label">Exam day strategy</div>
+  <div class="tip-grid">
+    <div class="tip-card"><span class="tip-emoji">🔥</span><div class="tip-title">Focus on Pipelines First</div>Over half the exam is Domain 3. If time is short, spend the majority of study hours here. Learn YAML pipeline syntax, agents, and deployment strategies cold.</div>
+    <div class="tip-card"><span class="tip-emoji">🤚</span><div class="tip-title">Prerequisites Matter</div>You need AZ-104 (Admin) or AZ-204 (Developer) before earning the DevOps Expert cert. You can sit AZ-400 standalone, but the full cert requires a prerequisite.</div>
+    <div class="tip-card"><span class="tip-emoji">🧪</span><div class="tip-title">Hands-On is Non-Negotiable</div>The exam has performance-based labs in a live Azure environment. You cannot pass on theory alone. Create a free Azure DevOps org and build real YAML pipelines.</div>
+    <div class="tip-card"><span class="tip-emoji">💰</span><div class="tip-title">Exam Details</div>Cost: ~$165 USD. Passing score: 700/1000. Up to 5 attempts per year. 24hr wait after first fail, then 14 days between retakes. Renews annually via free online assessment.</div>
+    <div class="tip-card"><span class="tip-emoji">🎯</span><div class="tip-title">Read the Whole Question</div>Questions have long case study scenarios. Key detail is often buried mid-paragraph. Watch for constraint words: "least privilege", "no downtime", "without modifying code".</div>
+    <div class="tip-card"><span class="tip-emoji">🗝️</span><div class="tip-title">Secrets = Key Vault. Always.</div>If a question involves storing passwords, connection strings, or certificates — the answer is almost always Azure Key Vault. Know how to reference it from pipeline variable groups.</div>
+    <div class="tip-card"><span class="tip-emoji">🕐</span><div class="tip-title">Suggested Study Timeline</div>Beginner: 12–16 weeks. Weeks 1–3: DevOps + Git fundamentals. Weeks 4–8: Pipelines deep-dive. Weeks 9–11: Security &amp; IaC. Weeks 12–13: Monitoring. Weeks 14–16: Practice exams + labs.</div>
+    <div class="tip-card"><span class="tip-emoji">📖</span><div class="tip-title">Official Resources</div>Microsoft Learn has free AZ-400 learning paths. Search "AZ-400 study guide" on learn.microsoft.com. The Microsoft Exam Readiness Zone on YouTube has free prep episodes for each domain.</div>
+  </div>
+  <div class="section-label" style="margin-top:36px">Terminology you must know cold</div>
+  <div class="cheatsheet-grid">
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(59,130,246,.15);color:#60a5fa">🔤</div>CI vs CD</div>
+      <table class="cs-table">
+        <tr><td>CI</td><td><strong>Continuous Integration</strong> — auto build &amp; test every commit</td></tr>
+        <tr><td>CD (Delivery)</td><td><strong>Continuous Delivery</strong> — always ready to deploy; human approves final push</td></tr>
+        <tr><td>CD (Deployment)</td><td><strong>Continuous Deployment</strong> — fully automated to production</td></tr>
+      </table>
+    </div>
+    <div class="cs-card">
+      <div class="cs-title"><div class="cs-icon" style="background:rgba(16,185,129,.15);color:#34d399">🧮</div>SRE Terms</div>
+      <table class="cs-table">
+        <tr><td>SLI</td><td>Service Level Indicator — a measurable metric (e.g. 99.9% uptime)</td></tr>
+        <tr><td>SLO</td><td>Service Level Objective — your internal target for an SLI</td></tr>
+        <tr><td>SLA</td><td>Service Level Agreement — contractual commitment to customers</td></tr>
+        <tr><td>Error Budget</td><td>Allowed downtime remaining before SLO is breached</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+// ══════════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════════
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════════════════════════════════════
+// DOMAIN ACCORDION
+// ══════════════════════════════════════
+function toggleDomain(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ══════════════════════════════════════
+// ACTIVITY TAB SWITCHING (per domain)
+// ══════════════════════════════════════
+function switchAct(domain, pane, btn) {
+  const panel = btn.closest('.activity-panel');
+  panel.querySelectorAll('.act-tab').forEach(t => t.classList.remove('active'));
+  panel.querySelectorAll('.act-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(domain+'-'+pane).classList.add('active');
+}
+
+// ══════════════════════════════════════
+// DRAG & DROP ENGINE
+// ══════════════════════════════════════
+let draggedId = null;
+let draggedEl = null;
+
+document.addEventListener('dragstart', e => {
+  if (e.target.classList.contains('dnd-item') && e.target.draggable) {
+    draggedId = e.target.dataset.id;
+    draggedEl = e.target;
+    e.target.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  }
+});
+document.addEventListener('dragend', e => {
+  if (e.target.classList.contains('dnd-item')) {
+    e.target.classList.remove('dragging');
+  }
+});
+
+function handleDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+  e.dataTransfer.dropEffect = 'move';
+}
+function handleDragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  zone.classList.remove('drag-over');
+  if (!draggedEl || zone.querySelector('.dnd-item')) return; // zone already filled
+
+  const answer = zone.dataset.answer;
+  const clone = draggedEl.cloneNode(true);
+  clone.draggable = false;
+  clone.style.cursor = 'default';
+
+  if (draggedId === answer) {
+    clone.classList.add('correct-drop');
+    zone.appendChild(clone);
+    draggedEl.remove();
+  } else {
+    clone.classList.add('wrong-drop');
+    zone.appendChild(clone);
+    setTimeout(() => { clone.remove(); }, 900);
+    return;
+  }
+
+  // Check if all zones in same dnd-area are complete
+  const area = zone.closest('.activity-content') || zone.closest('.domain-body');
+  const allZones = area.querySelectorAll('.dnd-zone');
+  const filled = [...allZones].filter(z => z.querySelector('.dnd-item.correct-drop'));
+  const resultId = zone.closest('.act-pane') ? zone.closest('.act-pane').id.replace('-dnd','') + '-result' : null;
+  if (resultId && filled.length === allZones.length) {
+    const res = document.getElementById(resultId);
+    if (res) { res.textContent = '🎉 Perfect! All matched correctly.'; res.className = 'dnd-result show good'; }
+  }
+}
+
+function resetDnd(domain) {
+  // Re-render by reloading the domain's dnd pane content
+  const srcId = 'dnd-'+domain+'-src';
+  const resultId = 'dnd-'+domain+'-result';
+  const src = document.getElementById(srcId);
+  const result = document.getElementById(resultId);
+  if (result) { result.className = 'dnd-result'; result.textContent = ''; }
+
+  // Put items back from zones into source
+  const pane = document.getElementById(domain+'-dnd');
+  if (!pane) return;
+  pane.querySelectorAll('.dnd-zone').forEach(z => {
+    const item = z.querySelector('.dnd-item');
+    if (item) {
+      item.classList.remove('correct-drop','wrong-drop');
+      item.draggable = true;
+      item.style.cursor = 'grab';
+      if (src) src.appendChild(item);
+      else z.removeChild(item);
+    }
+  });
+}
+
+// ══════════════════════════════════════
+// YAML BUILDER
+// ══════════════════════════════════════
+const yamlBlocks = {
+  trigger: `<span class="yaml-line-comment"># ── Trigger: run on every push to main ──</span>\n<span class="yaml-line-key">trigger</span>:\n  <span class="yaml-line-key">branches</span>:\n    <span class="yaml-line-key">include</span>:\n      <span class="yaml-line-special">- main</span>\n`,
+  pool: `\n<span class="yaml-line-comment"># ── Agent: use a Microsoft-hosted Ubuntu agent ──</span>\n<span class="yaml-line-key">pool</span>:\n  <span class="yaml-line-key">vmImage</span>: <span class="yaml-line-str">'ubuntu-latest'</span>\n`,
+  variables: `\n<span class="yaml-line-comment"># ── Variables: reusable values ──</span>\n<span class="yaml-line-key">variables</span>:\n  <span class="yaml-line-key">buildConfiguration</span>: <span class="yaml-line-str">'Release'</span>\n  <span class="yaml-line-key">appName</span>: <span class="yaml-line-str">'my-api'</span>\n`,
+  stages: `\n<span class="yaml-line-comment"># ── Stages: Build then Deploy ──</span>\n<span class="yaml-line-key">stages</span>:\n  <span class="yaml-line-special">- stage</span>: <span class="yaml-line-val">Build</span>\n    <span class="yaml-line-key">displayName</span>: <span class="yaml-line-str">'Build Stage'</span>\n    <span class="yaml-line-key">jobs</span>:\n      <span class="yaml-line-special">- job</span>: <span class="yaml-line-val">BuildApp</span>\n  <span class="yaml-line-special">- stage</span>: <span class="yaml-line-val">Deploy</span>\n    <span class="yaml-line-key">displayName</span>: <span class="yaml-line-str">'Deploy to Production'</span>\n    <span class="yaml-line-key">dependsOn</span>: <span class="yaml-line-val">Build</span>\n`,
+  steps: `\n<span class="yaml-line-comment"># ── Steps: what to run ──</span>\n        <span class="yaml-line-key">steps</span>:\n          <span class="yaml-line-special">- task</span>: <span class="yaml-line-val">DotNetCoreCLI@2</span>\n            <span class="yaml-line-key">inputs</span>:\n              <span class="yaml-line-key">command</span>: <span class="yaml-line-str">'build'</span>\n          <span class="yaml-line-special">- task</span>: <span class="yaml-line-val">DotNetCoreCLI@2</span>\n            <span class="yaml-line-key">inputs</span>:\n              <span class="yaml-line-key">command</span>: <span class="yaml-line-str">'test'</span>\n          <span class="yaml-line-special">- task</span>: <span class="yaml-line-val">PublishBuildArtifacts@1</span>\n`,
+  approval: `\n<span class="yaml-line-comment"># ── Environment: requires human approval ──</span>\n          <span class="yaml-line-special">- deployment</span>: <span class="yaml-line-val">DeployProd</span>\n            <span class="yaml-line-key">environment</span>: <span class="yaml-line-str">'Production'</span>  <span class="yaml-line-comment"># ← approval configured in DevOps UI</span>\n            <span class="yaml-line-key">strategy</span>:\n              <span class="yaml-line-key">runOnce</span>:\n                <span class="yaml-line-key">deploy</span>:\n                  <span class="yaml-line-key">steps</span>:\n                    <span class="yaml-line-special">- script</span>: <span class="yaml-line-str">echo "Deploying to production!"</span>\n`
+};
+
+let yamlAdded = new Set();
+const yamlTips = {
+  trigger: '📡 The trigger tells the pipeline when to run. Without this, you\'d have to run it manually every time.',
+  pool: '🖥️ The pool section picks your agent — the machine that runs the pipeline. Microsoft-hosted agents are free and managed for you.',
+  variables: '🔑 Variables let you reuse values across the pipeline. For secrets, reference Azure Key Vault here instead of hardcoding.',
+  stages: '🎬 Stages allow you to separate Build from Deploy. You can add conditions and approvals between stages.',
+  steps: '📋 Steps are individual commands or tasks. Azure Pipelines has hundreds of built-in tasks (DotNetCoreCLI, AzureWebApp, Docker, etc.).',
+  approval: '✅ By referencing an "Environment", the pipeline pauses and sends an approval notification before deploying. Critical for production!'
+};
+
+function addYamlBlock(key) {
+  const output = document.getElementById('yaml-output');
+  const validate = document.getElementById('yaml-validate');
+  if (yamlAdded.has(key)) { validate.textContent = `⚠️ "${key}" is already in your pipeline.`; validate.className = 'yaml-validate show'; setTimeout(()=>validate.classList.remove('show'),2500); return; }
+  yamlAdded.add(key);
+  if (output.innerHTML.includes('Click blocks')) output.innerHTML = '';
+  output.innerHTML += '<div style="margin-bottom:4px"><pre>' + yamlBlocks[key] + '</pre></div>';
+  validate.textContent = '💡 ' + yamlTips[key];
+  validate.className = 'yaml-validate show';
+  setTimeout(()=>validate.classList.remove('show'), 4000);
+}
+
+function clearYaml() {
+  document.getElementById('yaml-output').innerHTML = '<span style="color:var(--muted);font-style:italic;font-size:12px;"># Click blocks on the left to build your pipeline...</span>';
+  yamlAdded.clear();
+}
+
+// ══════════════════════════════════════
+// PIPELINE CHALLENGE
+// ══════════════════════════════════════
+const pipeSteps = [
+  {
+    title: 'Step 1: Choose a trigger',
+    desc: 'Your team wants the pipeline to run automatically whenever someone pushes to the main branch. What trigger should you set?',
+    choices: ['Schedule trigger — run at midnight every day', 'Branch trigger on main — run on every push to main', 'Manual trigger only — someone clicks Run each time'],
+    correct: 1,
+    feedback: '✅ Correct! A branch trigger on main is the foundation of CI. Every commit to main automatically kicks off the pipeline, giving you instant feedback.'
+  },
+  {
+    title: 'Step 2: Choose your agent',
+    desc: 'Your team has no spare infrastructure and doesn\'t want to manage build servers. Which pool type should you use?',
+    choices: ['Self-hosted agent on your own VM', 'Microsoft-hosted agent (ubuntu-latest)', 'A Docker container run locally by a developer'],
+    correct: 1,
+    feedback: '✅ Correct! Microsoft-hosted agents are fully managed by Microsoft — they spin up, run your pipeline, then disappear. No maintenance required. Perfect for teams without spare infra.'
+  },
+  {
+    title: 'Step 3: Add build + test steps',
+    desc: 'After checkout, what order should your pipeline steps run in?',
+    choices: ['Deploy → Test → Build', 'Build → Test → Publish Artefact', 'Test → Build → Deploy directly'],
+    correct: 1,
+    feedback: '✅ Correct! Build first (compile the code), then test (validate it works), then publish the artefact (package it for deployment). Never deploy before testing!'
+  },
+  {
+    title: 'Step 4: Production deployment gate',
+    desc: 'Before deploying to production, you need a manager to approve it. What\'s the right way to do this in Azure Pipelines?',
+    choices: ['Add a "sleep 60" task to give people time to cancel', 'Configure an Environment with required approvers in Azure DevOps', 'Send the manager an email manually before running the Deploy stage'],
+    correct: 1,
+    feedback: '✅ Correct! Azure DevOps Environments support required approvers. The pipeline pauses, sends a notification, and waits for explicit approval before proceeding. This is a key exam concept!'
+  }
+];
+
+let pipeCompleted = 0;
+
+function renderPipeChallenge() {
+  const container = document.getElementById('pipe-d3-steps');
+  container.innerHTML = pipeSteps.map((s, i) => `
+    <div>
+      <div class="pipe-step ${i===0?'unlocked':''}" id="ps${i}">
+        <div class="pipe-step-num">${i+1}</div>
+        <div class="pipe-step-body">
+          <div class="pipe-step-title">${s.title}</div>
+          <div class="pipe-step-desc">${s.desc}</div>
+          <div class="pipe-choices" id="pc${i}">
+            ${s.choices.map((c,j) => `<button class="pipe-choice" onclick="choosePipe(${i},${j})" id="pcc${i}_${j}">${c}</button>`).join('')}
+          </div>
+          <div class="pipe-feedback" id="pf${i}"></div>
+        </div>
+      </div>
+      ${i < pipeSteps.length-1 ? '<div class="pipe-connector"></div>' : ''}
+    </div>
+  `).join('');
+}
+
+function choosePipe(stepIdx, choiceIdx) {
+  const s = pipeSteps[stepIdx];
+  const btns = document.querySelectorAll(`#pc${stepIdx} .pipe-choice`);
+  btns.forEach(b => b.disabled = true);
+  const fb = document.getElementById(`pf${stepIdx}`);
+
+  if (choiceIdx === s.correct) {
+    btns[choiceIdx].classList.add('chosen-right');
+    fb.textContent = s.feedback;
+    fb.className = 'pipe-feedback show good';
+    pipeCompleted++;
+    // Unlock next
+    if (stepIdx+1 < pipeSteps.length) {
+      document.getElementById(`ps${stepIdx+1}`).classList.add('unlocked');
+    }
+  } else {
+    btns[choiceIdx].classList.add('chosen-wrong');
+    btns[s.correct].classList.add('chosen-right');
+    fb.textContent = `❌ Not quite. The correct choice was "${s.choices[s.correct]}". ${s.feedback.replace('✅ Correct! ','')}`;
+    fb.className = 'pipe-feedback show bad';
+    pipeCompleted++;
+    if (stepIdx+1 < pipeSteps.length) {
+      document.getElementById(`ps${stepIdx+1}`).classList.add('unlocked');
+    }
+  }
+
+  document.getElementById(`ps${stepIdx}`).classList.add('completed');
+  const pct = (pipeCompleted / pipeSteps.length) * 100;
+  document.getElementById('pipe-d3-fill').style.width = pct + '%';
+  document.getElementById('pipe-d3-count').textContent = `${pipeCompleted} / ${pipeSteps.length}`;
+}
+
+// ══════════════════════════════════════
+// SCENARIO CHALLENGES
+// ══════════════════════════════════════
+const scenarios = [
+  { domain:'Pipelines', color:'#f59e0b', q:'Your team deploys a new API version. If it fails, you need to instantly switch back to the previous version with zero downtime. Which strategy?', context:'Application runs on Azure App Service. Team wants the simplest possible rollback mechanism.', options:['Rolling deployment — gradually replace old instances','Blue/Green — two identical environments, swap traffic instantly','Canary — release to 10% of users first, then roll out','A/B testing — split traffic 50/50 between two versions'], correct:1, exp:'<strong>Blue/Green</strong> is right. Blue = current, Green = new. Traffic switches instantly via a routing rule. If Green fails, flip back to Blue in seconds. Rolling is slower to roll back. Canary is for gradual rollout. A/B is for experimentation, not deployment safety.' },
+  { domain:'Security', color:'#ef4444', q:'A developer hardcoded a database connection string directly in the Azure Pipelines YAML file. What is the correct fix?', context:'The pipeline is in a public GitHub repo. The connection string includes username and password.', options:['Encrypt using Base64 and store in the YAML file','Store in Azure Key Vault and reference via a pipeline variable group','Move the YAML file to a private repository','Store as a plain-text pipeline variable in Azure DevOps'], correct:1, exp:'<strong>Azure Key Vault</strong> is correct. Create a secret in Key Vault, link a variable group in Azure DevOps, reference the group in YAML. The secret value is never exposed. Base64 is not encryption — easily decoded. Private repo doesn\'t fix exposure. Plain-text variables are still risky.' },
+  { domain:'Source Control', color:'#8b5cf6', q:'20 developers push code multiple times per day. You want the simplest branching strategy for continuous deployment. Which?', context:'Team wants minimal merge conflicts and fast delivery cycles.', options:['GitFlow — feature, develop, release, hotfix, and main branches','Trunk-Based — everyone commits to main with short-lived branches','Forking — each developer maintains their own fork','Release branching — a new branch for every release version'], correct:1, exp:'<strong>Trunk-Based Development</strong> for high-frequency CD teams. All devs commit to a single main branch with short-lived branches (&lt;2 days). Minimises conflicts, supports CI/CD. GitFlow adds too much overhead. Forking adds friction for internal teams. Release branching is for versioned software.' },
+  { domain:'Security', color:'#ef4444', q:'You want to scan source code for security vulnerabilities on every pull request. What type of scanning is this?', context:'The scan runs against code files before the application is compiled or run.', options:['DAST — Dynamic Application Security Testing','SAST — Static Application Security Testing','SCA — Software Composition Analysis','Penetration testing'], correct:1, exp:'<strong>SAST</strong> analyses source code without executing it. Fast, runs early, ideal for PR-triggered checks. DAST tests a running application — runs later in the pipeline. SCA scans third-party dependencies for CVEs. Penetration testing is manual/semi-manual, not an automated pipeline step.' },
+  { domain:'Pipelines', color:'#f59e0b', q:'You need to deploy to production but require a manager to approve before it proceeds. What Azure Pipelines feature enables this?', context:'The pipeline should pause at the production stage and wait for explicit approval.', options:['Pipeline variables — set a variable to control whether the stage runs','Environment approvals — configure a required reviewer on the production environment','A conditional YAML expression using an "if" clause','Schedule trigger — only allow deployments during business hours'], correct:1, exp:'<strong>Environment approvals</strong> is correct. Create an Environment in Azure DevOps and configure required approvers. The pipeline pauses, sends a notification, and waits. Know the difference between pipeline-level gates and environment-level approvals — both come up in the exam.' },
+  { domain:'Processes', color:'#3b82f6', q:'Your team wants to measure how quickly they recover when a production incident occurs. Which DORA metric tracks this?', context:'The team has been experiencing outages and wants a KPI to track improvement over time.', options:['Deployment Frequency — how often code is deployed to production','Lead Time for Changes — time from commit to production deployment','Change Failure Rate — % of deployments causing production issues','Mean Time to Recovery (MTTR) — how quickly the team restores service after failure'], correct:3, exp:'<strong>MTTR</strong> measures average time from incident start to service restored. Deployment Frequency = release cadence. Lead Time = delivery speed. Change Failure Rate = deployment quality. All four DORA metrics are important exam knowledge.' },
+  { domain:'Pipelines', color:'#f59e0b', q:'You are writing infrastructure code to deploy Azure resources in your CI/CD pipeline. The team is Azure-only. What is the recommended Microsoft-native IaC option?', context:'Team wants to avoid learning a third-party tool and wants native Azure support.', options:['Terraform — HashiCorp multi-cloud IaC tool','Bicep — Microsoft DSL that compiles to ARM, cleaner syntax, same capabilities','ARM Templates — native Azure JSON format','Pulumi — IaC using Python or TypeScript code'], correct:1, exp:'<strong>Bicep</strong> is Microsoft\'s recommended Azure-native IaC. It compiles to ARM JSON so has identical capabilities, but with cleaner syntax. For Azure-only teams it\'s the preferred choice. Terraform is better for multi-cloud. ARM is verbose. Pulumi is less common in AZ-400 exam questions.' },
+  { domain:'Instrumentation', color:'#10b981', q:'You want to see the full journey of a single HTTP request across multiple microservices to find where slowdowns occur. Which Azure service provides this?', context:'Each microservice is independently deployed. You need to trace across service boundaries.', options:['Azure Monitor Alerts — triggers notifications when response time exceeds a threshold','Azure Application Insights — distributed tracing with end-to-end transaction tracking','Log Analytics — centralises all log data for KQL querying','Azure Service Health — shows health status of Azure platform services'], correct:1, exp:'<strong>Application Insights</strong> provides distributed tracing — tracks a single request across multiple services using a correlation ID. You can see exactly where time was spent. Azure Monitor Alerts are reactive. Log Analytics queries log data but lacks application-level trace visualisation. Service Health is about the Azure platform, not your app.' }
+];
+
+let answered = new Set();
+
+function renderScenarios() {
+  document.getElementById('scenarios-container').innerHTML = scenarios.map((s,i) => `
+    <div class="scenario-card" id="sc${i}">
+      <div class="scenario-header">
+        <span class="sc-domain-tag" style="background:${s.color}22;color:${s.color}">${s.domain}</span>
+        <div class="scenario-q">${s.q}</div>
+      </div>
+      <div class="scenario-context">💼 Context: ${s.context}</div>
+      <div class="options-list" id="opts${i}">
+        ${s.options.map((o,j) => `<button class="option-btn" onclick="answer(${i},${j})"><span class="option-key">${String.fromCharCode(65+j)}.</span><span>${o}</span></button>`).join('')}
+      </div>
+      <div class="explanation" id="exp${i}">✅ <strong>Explanation:</strong><br><br>${s.exp}</div>
+      <div class="scenario-footer"><button class="reset-btn" onclick="resetScenario(${i})">↺ Reset</button></div>
+    </div>
+  `).join('');
+}
+
+function answer(scIdx, optIdx) {
+  const s = scenarios[scIdx];
+  document.querySelectorAll(`#opts${scIdx} .option-btn`).forEach((btn,i) => {
+    btn.disabled = true;
+    if (i === s.correct) btn.classList.add('correct');
+    else if (i === optIdx) btn.classList.add('wrong');
+  });
+  document.getElementById(`exp${scIdx}`).classList.add('show');
+  answered.add(scIdx);
+  const pct = (answered.size/scenarios.length)*100;
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-count').textContent = `${answered.size} / ${scenarios.length} answered`;
+}
+
+function resetScenario(scIdx) {
+  answered.delete(scIdx);
+  renderScenarios();
+  const pct = (answered.size/scenarios.length)*100;
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-count').textContent = `${answered.size} / ${scenarios.length} answered`;
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+renderScenarios();
+renderPipeChallenge();
+</script>
+</body>
+</html>
