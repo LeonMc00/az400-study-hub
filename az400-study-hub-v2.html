@@ -49,7 +49,7 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4.2rem);font-weight:
 
 /* ── DOMAIN CARDS ── */
 .domains-grid{display:grid;gap:14px;}
-.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:visible;transition:transform .2s,box-shadow .2s;}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform .2s,box-shadow .2s;}
 .domain-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3);}
 .domain-header{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer;user-select:none;}
 .domain-num{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;flex-shrink:0;color:#fff;}
@@ -79,7 +79,7 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4.2rem);font-weight:
 .what-is.c3{border-color:var(--d3);}.what-is.c4{border-color:var(--d4);}.what-is.c5{border-color:var(--d5);}
 
 /* ── ACTIVITY PANEL ── */
-.activity-panel{margin-top:20px;border:1px solid var(--border);border-radius:12px;overflow:visible;}
+.activity-panel{margin-top:20px;border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .activity-tabs{display:flex;background:var(--bg);border-bottom:1px solid var(--border);}
 .act-tab{flex:1;padding:10px 6px;font-size:12px;font-weight:500;text-align:center;cursor:pointer;color:var(--muted);border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px;border-bottom:2px solid transparent;}
 .act-tab:hover{color:var(--text);}
@@ -90,27 +90,42 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4.2rem);font-weight:
 .act-pane.active{display:block;animation:fadeIn .2s ease;}
 
 /* ── FLASHCARDS ── */
-.flashcard-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
-.flashcard{perspective:1000px;cursor:pointer;flex:1;min-width:140px;max-width:220px;}
+
+.flashcard-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+.flashcard{
+  perspective: 800px;                 /* a bit higher reduces artifacts */
+  -webkit-perspective: 800px;         /* Safari */
+  cursor:pointer;
+  flex:1;
+  min-width:140px;
+  max-width:220px;
+  user-select:none;
+}
+
 .flashcard-inner{
   position:relative;
   width:100%;
   padding-top:120%;
   transform-style:preserve-3d;
-  -webkit-transform-style:preserve-3d;
-  transition:transform .6s cubic-bezier(.4,0,.2,1);
-  -webkit-transition:-webkit-transform .6s cubic-bezier(.4,0,.2,1);
+  -webkit-transform-style:preserve-3d; /* Safari */
+  transition:transform .5s;
+  will-change:transform;              /* helps Firefox/Windows */
 }
+
 .flashcard.flipped .flashcard-inner{
   transform:rotateY(180deg);
-  -webkit-transform:rotateY(180deg);
 }
+
 .flashcard-face{
   position:absolute;
   inset:0;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
-  border-radius:10px;
+
   display:flex;
   align-items:center;
   justify-content:center;
@@ -118,18 +133,49 @@ h1{font-family:'Syne',sans-serif;font-size:clamp(2.2rem,6vw,4.2rem);font-weight:
   text-align:center;
   font-size:13px;
   line-height:1.5;
-  overflow:hidden;
+  border-radius:10px;
+
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden; /* Safari */
+
+  /* Tiny Z offset stops “both sides at once” overlap (z-fighting) */
+  transform:translateZ(0.1px);
 }
-.flashcard-front{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;}
+
+.flashcard-front{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-family:'DM Mono',monospace;
+  font-size:12px;
+
+  /* Explicit 3D transform makes Firefox behave */
+  transform:rotateY(0deg) translateZ(0.1px);
+}
+
 .flashcard-back{
   background:rgba(59,130,246,.12);
   border:1px solid rgba(59,130,246,.3);
   color:var(--text);
-  transform:rotateY(180deg);
-  -webkit-transform:rotateY(180deg);
   font-size:12.5px;
+
+  transform:rotateY(180deg) translateZ(0.1px);
 }
-.flashcard-hint{font-size:10px;color:var(--muted);text-align:center;margin-top:-8px;margin-bottom:10px;font-family:'DM Mono',monospace;}
+
+.flashcard-hint{
+  font-size:10px;
+  color:var(--muted);
+  text-align:center;
+  margin-top:-8px;
+  margin-bottom:10px;
+  font-family:'DM Mono',monospace;
+}
+
+/* Optional: respect reduced motion settings */
+@media (prefers-reduced-motion: reduce){
+  .flashcard-inner{ transition:none; }
+}
+
 
 /* ── DRAG & DROP ── */
 .dnd-area{display:flex;gap:14px;flex-wrap:wrap;}
