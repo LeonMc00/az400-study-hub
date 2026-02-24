@@ -1,0 +1,37 @@
+name: Check AZ-400 Exam Updates
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9am UTC
+  workflow_dispatch:       # Also allow manual trigger
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Microsoft study guide
+        run: |
+          curl -s "https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400" \
+          | sha256sum > current_hash.txt
+          cat current_hash.txt
+
+      - name: Compare with stored hash
+        run: |
+          if [ -f stored_hash.txt ]; then
+            if ! diff -q current_hash.txt stored_hash.txt; then
+              echo "CHANGED=true" >> $GITHUB_ENV
+            fi
+          fi
+
+      - name: Open issue if changed
+        if: env.CHANGED == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '⚠️ AZ-400 exam content may have changed',
+              body: '@Claude The Microsoft AZ-400 study guide page has changed. Review it at https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-400 and update the study hub accordingly.',
+              labels: ['exam-update']
+            })
