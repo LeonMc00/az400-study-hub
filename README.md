@@ -2,8 +2,8 @@
 
 > An interactive, browser-based study guide for the **Microsoft AZ-400: Designing and Implementing Microsoft DevOps Solutions** certification exam.
 
-🌐 **Live Demo:** [your-username.github.io/az400-study-hub/az400-study-hub-v2.html](https://your-username.github.io/az400-study-hub/az400-study-hub-v2.html)
-*(Replace `your-username` with your GitHub username once GitHub Pages is enabled)*
+🌐 **Live Demo:** [leonmc00.github.io/az400-study-hub/az400-study-hub-v2.html](https://leonmc00.github.io/az400-study-hub/az400-study-hub-v2.html)
+
 
 ---
 
