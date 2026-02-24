@@ -4,7 +4,6 @@
 
 🌐 **Live Demo:** [leonmc00.github.io/az400-study-hub/az400-study-hub-v2.html](https://leonmc00.github.io/az400-study-hub/az400-study-hub-v2.html)
 
-
 ---
 
 ## 📖 About
@@ -68,13 +67,13 @@ Everything is contained in a single HTML file for simplicity. No build process, 
 ### Option 1 — Live via GitHub Pages
 Once GitHub Pages is enabled (Settings → Pages → Deploy from branch: main), the app is available at:
 ```
-https://your-username.github.io/az400-study-hub/az400-study-hub-v2.html
+https://leonmc00.github.io/az400-study-hub/az400-study-hub-v2.html
 ```
 
 ### Option 2 — Run locally
 Clone the repository and open the HTML file directly in your browser:
 ```bash
-git clone https://github.com/your-username/az400-study-hub.git
+git clone https://github.com/leonmc00/az400-study-hub.git
 cd az400-study-hub
 # Open az400-study-hub-v2.html in your browser
 ```
@@ -97,7 +96,7 @@ GitHub Pages will automatically redeploy within approximately 60 seconds.
 
 ### Editing locally
 ```bash
-git clone https://github.com/your-username/az400-study-hub.git
+git clone https://github.com/leonmc00/az400-study-hub.git
 # Edit az400-study-hub-v2.html in your editor of choice
 git add .
 git commit -m "Your change description"
